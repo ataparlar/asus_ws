@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<launch>
+
+  <rosparam command="load" file="$(find rover_21_localization)/params/ekf_params.yaml" />
+
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_odom" clear_params="true" >
+  </node>
+
+  <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" clear_params="true" output="screen" >
+      <remap from="odometry/filtered" to="odometry/filtered_map"/>
+      <remap from="gps/fix" to="/gps/fix"/>
+      <remap from="imu/data_raw" to="/imu/data"/>     
+  </node>
+
+  <!-- IMU Bosh transformation publisher -->
+  <node name="odom_to_map" pkg="tf" type="static_transform_publisher" args="0.0 0.0 0.0 0.0 0.0 0 map odom 200" />
+
+
+  <!--- Run Covariance Publisher -->
+    <node pkg="rover_21_localization" type="pose_with_covariance_pub.py" name="imu_to_covariance" output="screen"/>
+
+
+<!-- base_link to IMU transformation publisher
+  <node name="base_link_to_imu" pkg="tf" type="static_transform_publisher" args="0.0 0.0 0.50 0.0 0.0 0 base_link imu_link 200" />
+-->
+
+<!--
+  <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan" output="screen">
+    <remap from="cloud_in" to="/velodyne_points"/>
+    <remap from="scan" to="scan"/>
+    <rosparam>
+      transform_tolerance: 0.01
+      min_height: 0.10
+      max_height: 3.0
+
+      angle_min: -2.39982772 
+      angle_max: 2.39982772 
+      angle_increment: 0.01
+      scan_time: 0.1
+      range_min: 1.0
+      range_max: 10.0
+      use_inf: true
+      concurrency_level: 0
+    </rosparam>
+  </node>
+-->
+  <!--/group-->
+</launch>

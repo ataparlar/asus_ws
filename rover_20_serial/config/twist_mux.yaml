@@ -1,0 +1,35 @@
+topics:
+- name    : navigation
+  topic   : /nav_vel
+  timeout : 0.5
+  priority: 10
+- name    : joystick
+  topic   : /joy_teleop/cmd_vel
+  timeout : 0.5
+  priority: 100
+- name    : keyboard
+  topic   : /key_teleop/cmd_vel
+  timeout : 0.5
+  priority: 95
+- name    : robot_steering
+  topic   : /rqt_vel
+  timeout : 0.5
+  priority: 90
+- name    : hand_drive
+  topic   : /cmd_hand_drive
+  timeout : 0.5
+  priority: 100
+- name    : e_stop
+  topic   : /stop
+  timeout : 0.5
+  priority: 255
+- name    : oscillator
+  topic   : /handler_vel
+  timeout : 0.5
+  priority: 99
+
+locks:
+- name    : e__stop
+  topic   : e__stop
+  timeout : 0.0
+  priority: 255

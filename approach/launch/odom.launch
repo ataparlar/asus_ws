@@ -1,0 +1,4 @@
+<launch>
+    <include file="$(find rover_21_localization)/launch/localization.launch" />
+    <node pkg="rover_21_control" type="rover_sim_odom.py" name="odom" output="screen"/>
+</launch>

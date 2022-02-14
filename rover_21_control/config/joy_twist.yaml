@@ -1,0 +1,30 @@
+joy_twist:
+  enable_turbo: 1
+  turbo_button: 5
+  turbo_coefficient: 1.5
+  movement_button: 4
+  linear_axis: 1
+  angular_axis: 0
+
+#For F710:
+#Buttons
+#0 X
+#1 A
+#2 B
+#3 Y
+#4 LB
+#5 RB
+#6 LT
+#7 RT
+#8 back
+#9 start
+#10 Button stick left
+#11 Button stick right
+
+# Axes
+#0 Left/Right Axis stick left
+#1 Up/Down Axis stick left
+#2 Left/Right Axis stick right
+#3 Up/Down Axis stick right
+#4 cross key left/right
+#5 cross key up/down

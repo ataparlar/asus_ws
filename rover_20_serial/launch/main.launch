@@ -1,0 +1,7 @@
+<launch>
+ <include file="$(find rover_20_serial)/launch/rover_serial.launch" />
+ <node name="cmd" pkg="rover_20_control" type="rover_msg_creator.py" />
+ <node name="odom" pkg="rover_21_control" type="roverodom.py" />
+ <include file="$(find rover_21_localization)/launch/localization.launch" />
+ <include file="$(find bosch_imu_driver)/launch/imu.launch" />
+</launch>

@@ -1,0 +1,27 @@
+footprint_topic: "footprint"
+robot_radius: 0.8485
+
+robot_base_frame: base_link
+update_frequency: 4.0 #4.0
+publish_frequency: 4.0 #4.0 #3.0
+transform_tolerance: 1.0
+
+resolution: 0.1 #0.05
+
+obstacle_range: 6.5 #5.5
+raytrace_range: 10.0 #6.0
+
+#layer definitions
+static:
+    map_topic: /map
+    subscribe_to_updates: true
+
+obstacles_laser:
+    observation_sources: laser
+    laser: {data_type: LaserScan, clearing: true, marking: true, topic: scan, inf_is_valid: true}
+    map_topic: /map
+    subscribe_to_updates: true
+
+inflation:
+    inflation_radius: 1.0 #1.13 #1.0 #0.1
+    cost_scaling_factor: 10.0
