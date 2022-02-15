@@ -6,16 +6,16 @@ from geometry_msgs.msg import PoseStamped
 from tf.transformations import quaternion_from_euler
 
 class send_goal:
-    def __init__(self,x,y,yaw):
+    def __init__(self,x,y,yaw,frame_id='odom'):
         self.x = x
         self.y = y
         self.yaw = yaw
-        pose = self.create_geo_pose_stamped(self.x,self.y,self.yaw)
+        self.frame_id = frame_id
+        pose = self.create_geo_pose_stamped(self.x,self.y,self.yaw,self.frame_id)
         self.goal = MoveBaseGoal(target_pose = pose)
         self.movebase_client(self.goal)
 
-
-    def create_geo_pose_stamped(self,x, y, yaw, frame_id='odom'):
+    def create_geo_pose_stamped(self,x, y, yaw, frame_id):
         pose = PoseStamped()
         pose.pose.position.x = x
         pose.pose.position.y = y

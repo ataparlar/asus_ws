@@ -33,4 +33,5 @@
 
   <remap from="/cmd_vel" to="/nav_vel" />
   </node>
+  <node name="oscillation_handler" pkg="locomove_base" type="oscillation_handler.py"/>
 </launch>

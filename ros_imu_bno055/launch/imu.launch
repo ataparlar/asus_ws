@@ -22,9 +22,9 @@
         <param name="use_temperature" value="$(arg use_temperature)" />    
     </node>
 
-    <node name="base_link_to_imu_bosch"
+    <!--<node name="base_link_to_imu_bosch"
 			pkg="tf" type="static_transform_publisher"
-			args="0.20 -0.1 0.31 0.0 0.0 0.0 base_link imu1_link 200" />
+			args="0.20 -0.1 0.31 0.0 0.0 0.0 base_link imu1_link 200" />-->
 
 <!--
 	<node pkg="ros_imu_bno055" type="imu_to_covariance.py" name="imu_to_covariance" output="screen"/>

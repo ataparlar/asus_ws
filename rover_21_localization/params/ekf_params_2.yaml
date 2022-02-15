@@ -35,15 +35,15 @@ ekf_se_odom: # Used only for broadcasting odom to base_link transforms
   # -------------------------------------
   # IMU odometry:
 
-  odom1: /odometry/imu #/odometry/wheel #/husky_velocity_controller/odom
-  odom1_config: [false, false, false,
-                false, false, true,
-                false, false, false,
-                false,  false,  true,
-                false, false, false]
-  odom1_queue_size: 20
-  odom1_nodelay: false
-  odom1_differential: false
+  # odom1: /odometry/imu #/odometry/wheel #/husky_velocity_controller/odom
+  # odom1_config: [false, false, false,
+  #               false, false, true,
+  #               false, false, false,
+  #               false,  false,  true,
+  #               false, false, false]
+  # odom1_queue_size: 20
+  # odom1_nodelay: false
+  # odom1_differential: false
   # odom1_relative: true
   
 
@@ -57,7 +57,7 @@ ekf_se_odom: # Used only for broadcasting odom to base_link transforms
                   false, false, true,
                   false, false, false]
   odom2_queue_size: 20
-  odom2_nodelay: false
+  odom2_nodelay: true
   odom2_differential: false
   odom2_relative: false
 
@@ -74,7 +74,7 @@ ekf_se_odom: # Used only for broadcasting odom to base_link transforms
   # imu1_differential: false
   # imu1_relative: true
   # imu1_queue_size: 30
-  # imu1_remove_gravitational_acceleration: true
+  # imu1_remove_gravitational_acceleration: false
   # use_control: false
 
 # imu configure:
@@ -86,10 +86,10 @@ ekf_se_odom: # Used only for broadcasting odom to base_link transforms
                 true, true, true,
                 false, false, false]
   imu0_nodelay: true
-  imu0_differential: true
+  imu0_differential: false
   imu0_relative: true
   imu0_queue_size: 20
-  imu0_remove_gravitational_acceleration: true
+  imu0_remove_gravitational_acceleration: false
   use_control: false
 
 

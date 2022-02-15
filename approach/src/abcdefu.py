@@ -18,8 +18,8 @@ import numpy as np
 class TurningAround:
     def __init__(self):
         rospy.init_node("turning_node")
-        self.markers = {}
-        self.count_marker = {}
+        self.markers = {} # Marker id and position
+        self.count_marker = {} # Number of detections of one marker
         self.orientation = Quaternion() 
         self.position = Point()
         self.euler = (0,0,0)
@@ -51,7 +51,7 @@ class TurningAround:
             if i.fiducial_id not in self.count_marker.keys():
                 self.count_marker[i.fiducial_id] =0
                 #TODO: change send_goal, 0,0 location is start odometry of the move_base node
-                send_goal(0,0,m.atan2(self.correct_transform.translation.y,self.correct_transform.translation.x))#"base_link" argument was here, number of arguments is too much when base_link is given.
+                send_goal(self.position.x ,self.position.y ,m.atan2(self.correct_transform.translation.y,self.correct_transform.translation.x), "base_link")#"base_link" argument was here, number of arguments is too much when base_link is given.
                 print("I might see a tag just checking!")
                 rospy.sleep(4)
             for key,value in self.count_marker.items():
