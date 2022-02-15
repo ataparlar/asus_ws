@@ -15,7 +15,7 @@ import time
 serial_msg = ""
 comm_check = "0"
 callback_check = False
-ser = serial.Serial(port='/dev/ttyUSB1', baudrate=int(115200), parity=serial.PARITY_NONE,stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS,timeout=0.08)
+ser = serial.Serial(port='/dev/heroDriveSystem', baudrate=int(115200), parity=serial.PARITY_NONE,stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS,timeout=0.08)
 
 
 def serialCallback(data):
