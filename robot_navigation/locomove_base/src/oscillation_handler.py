@@ -45,9 +45,9 @@ class oscillation_handler:
         self.first_yaw = None
 
         self.goal_sub = rospy.Subscriber("/move_base_simple/goal", PoseStamped, self.goal_cb)
-        self.cmd_sub = rospy.Subscriber("/rover_velocity_controller/cmd_vel", Twist, self.cmd_callback)
+        #self.cmd_sub = rospy.Subscriber("/rover_velocity_controller/cmd_vel", Twist, self.cmd_callback)
         self.odom_sub = rospy.Subscriber("/odometry/filtered",Odometry, self.odom_cb)
-        #self.cmd_sub = rospy.Subscriber("/cmd_vel", Twist, self.cmd_callback)
+        self.cmd_sub = rospy.Subscriber("/cmd_vel", Twist, self.cmd_callback)
         self.cmd_pub = rospy.Publisher("/handler_vel", Twist, queue_size=1)
         self.stop = rospy.ServiceProxy('/locomove_base/stopper_service', osci)
         self.pose_sub = rospy.Subscriber("/locomove_base/DWBLocalPlanner/global_plan", Path, self.pose_cb)

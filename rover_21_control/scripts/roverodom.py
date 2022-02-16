@@ -68,7 +68,7 @@ class Localization(object):
 
 		self.odom_pub = rospy.Publisher('/odometry/wheel', Odometry, queue_size = 10)
 		rospy.Subscriber('/rover_serial_encoder', String, self.serial_callback)
-		rospy.Subscriber('/imu/data', Imu, self.imu_cb)
+		rospy.Subscriber('/imu1/data', Imu, self.imu_cb)
 		
 		self.controller()
 	
