@@ -81,9 +81,9 @@ ekf_se_odom: # Used only for broadcasting odom to base_link transforms
 
   imu0: /imu1/data
   imu0_config: [false, false, false,
-                true, true, true,
+                false, false, true,
                 false, false, false,
-                true, true, true,
+                false, false, true,
                 false, false, false]
   imu0_nodelay: true
   imu0_differential: false

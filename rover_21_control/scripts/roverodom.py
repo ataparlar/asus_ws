@@ -192,10 +192,10 @@ class Localization(object):
 			
 			#Debug calculated velocities
 			#print(str(self.front_left) + ", " + str(self.back_left) + ", " + str(self.front_right) + ", " + str(self.back_right))
-			print("FL:",self.front_left)
-			print("BL:",self.back_left)
-			print("FR:",self.front_right)
-			print("BR:",self.back_right)
+			# print("FL:",self.front_left)
+			# print("BL:",self.back_left)
+			# print("FR:",self.front_right)
+			# print("BR:",self.back_right)
 
 			print(str(self.x) + ", " + str(self.y))
 			#Odometry message is created with calculated parameters
@@ -203,7 +203,8 @@ class Localization(object):
 			self.odom = Odometry()
 			self.odom.header.stamp = self.current_time
 			self.odom.header.frame_id = "odom"
-			self.odom.pose.pose = Pose(Point(self.x, self.y, self.z), Quaternion(*self.q)) #Position of the rover
+			self.odom.pose.pose = Pose(Point(self.x, self.y, self.z), Quaternion(*self.q))
+			print(self.odom.pose.pose.orientation) #Position of the rover
 			self.odom.child_frame_id = "base_link"
 			self.odom.twist.twist = Twist(Vector3(self.vx, self.vy, 0), Vector3(0, 0, self.vth)) #Velocity of the rover
 

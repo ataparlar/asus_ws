@@ -28,7 +28,8 @@ class CommCheck():
         rospy.Subscriber("/cmd_vel",Twist,self.wheelCallback)
         rospy.Subscriber("/comm_check",Int16,self.extCheckCb)
         rospy.Subscriber('/odometry/wheel',Odometry,self.main)
-        serial_obj.cmd_timer = rospy.Time.now()
+        #serial_obj.cmd_timer = rospy.Time.now()
+        #self.twist_timer = rospy.Time.now().to_sec()
         rospy.spin()
 		
 
@@ -52,7 +53,9 @@ class CommCheck():
         
         serial_obj.twist_var.linear.x = data.linear.x * multiplier
         serial_obj.twist_var.angular.z = data.angular.z * multiplier
-        self.twist_timer = rospy.Time.now()
+        #self.twist_timer = rospy.Time.now().to_sec()
+        
+        
 	
 
     def main(self,data):
@@ -66,7 +69,9 @@ class CommCheck():
         elif serial_obj.arm_mode == 1:
             serial_obj.wheelVelToString()
 		
-        final_message = serial_obj.returnFinalMsg() 	
+        final_message = serial_obj.returnFinalMsg()
+        #if rospy.Time.now().to_sec() - self.twist_timer > 0.5:
+        #    final_message = "S00000000" + final_message[9:len(final_message)+1]
         pub.publish(final_message)
         print(final_message)
         

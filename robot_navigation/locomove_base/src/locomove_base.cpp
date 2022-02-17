@@ -155,6 +155,7 @@ const ros::NodeHandle& loadBackwardsCompatibleParameters(const ros::NodeHandle& 
 //bne yazdım
 bool LocoMoveBase::stopper_func(locomove_base::osci::Request &req, locomove_base::osci::Response &res){
   this->onNavigationCompleted();
+  publishZeroVelocity();
   return true;
 }
 //bne yazdım
