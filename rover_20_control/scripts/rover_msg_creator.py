@@ -11,7 +11,7 @@ from std_msgs.msg import Float64MultiArray
 from nav_msgs.msg import Odometry
 from SerialMessage import *
 
-rospy.init_node('message_creator')
+
 serial_obj = SerialMessage()
 serial_obj.activity_indicator_final = 3 
 
@@ -22,16 +22,14 @@ ext_comm_check = 0
 class CommCheck():
     def __init__(self):
         self.ext_comm_check = 0
-        
+        rospy.init_node('message_creator')
         rospy.Subscriber("joint_states/send",Float64MultiArray,self.jointCallback)
         rospy.Subscriber("/joy_teleop/cmd_vel",Twist,self.wheelCallback)
         rospy.Subscriber("/cmd_vel",Twist,self.wheelCallback)
         rospy.Subscriber("/comm_check",Int16,self.extCheckCb)
         rospy.Subscriber('/odometry/wheel',Odometry,self.main)
-        #serial_obj.cmd_timer = rospy.Time.now()
-        #self.twist_timer = rospy.Time.now().to_sec()
+
         rospy.spin()
-		
 
     def extCheckCb(self,data):
         self.ext_comm_check = rospy.Time.now().to_sec()
@@ -52,14 +50,10 @@ class CommCheck():
         multiplier = 120
         
         serial_obj.twist_var.linear.x = data.linear.x * multiplier
-        serial_obj.twist_var.angular.z = data.angular.z * multiplier
-        #self.twist_timer = rospy.Time.now().to_sec()
-        
-        
-	
+        serial_obj.twist_var.angular.z = data.angular.z * multiplier	
 
     def main(self,data):
-		
+
         if serial_obj.arm_mode == 5:
             serial_obj.jointVelocityToString()
             serial_obj.wheelVelToString()
@@ -68,15 +62,10 @@ class CommCheck():
             serial_obj.wheelVelToString()
         elif serial_obj.arm_mode == 1:
             serial_obj.wheelVelToString()
-		
+                
         final_message = serial_obj.returnFinalMsg()
-        #if rospy.Time.now().to_sec() - self.twist_timer > 0.5:
-        #    final_message = "S00000000" + final_message[9:len(final_message)+1]
-        pub.publish(final_message)
+        pub.publish(final_message)             
         print(final_message)
-        
-
 if __name__ == '__main__':
     CommCheck()
-
 

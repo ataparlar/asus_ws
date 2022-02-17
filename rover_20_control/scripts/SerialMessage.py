@@ -33,12 +33,11 @@ class SerialMessage():
 
 		self.right_wheel = 0
 		self.left_wheel = 0
-		self.cmd_timer = rospy.Time.now()
+
 		self.comm_check = "0"
 		rospy.Subscriber('/nav_vel',Twist,self.autonomous_cb)
 		rospy.Subscriber('/joy_teleop/cmd_vel',Twist,self.teleop_cb)
 		rospy.Subscriber('/joint_states/send',Float64MultiArray,self.joint_cb)
-		#rospy.Subscriber('/cmd_vel',Twist, self.twist_cb)
 
 	def autonomous_cb(self,data):
 		self.activity_indicator = 3
@@ -66,10 +65,6 @@ class SerialMessage():
 			way = 0
 		return str(way)
 
-	#def twist_cb(self, data):
-	#	self.cmd_timer = rospy.Time.now().to_sec()
-	#	print(self.cmd_timer)
-	
 	def wheelVelToString(self):
 
 		if self.twist_var.linear.x >= 0:
@@ -78,10 +73,7 @@ class SerialMessage():
 		elif self.twist_var.linear.x < 0:
 			self.left_wheel = self.twist_var.linear.x + self.twist_var.angular.z
 			self.right_wheel = self.twist_var.linear.x - self.twist_var.angular.z
-		
-		#if rospy.Time.now().to_sec() - self.cmd_timer > 0.5:
-		#	self.left_wheel = 0
-		#	self.right_wheel = 0
+
 		self.wheel_velocities[0] =  self.wheelSign(int(self.left_wheel)) + self.wheelParser(int(self.left_wheel))
 		self.wheel_velocities[1] =  self.wheelSign(int(self.right_wheel)) + self.wheelParser(int(self.right_wheel))
 

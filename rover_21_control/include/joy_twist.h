@@ -24,7 +24,6 @@
 class joyNode{
 private:
     ros::Subscriber joystickSub;
-    ros::Publisher twistPub;
     geometry_msgs::Twist twist;
     int enable_turbo;
     double turbo_coefficient;
@@ -32,8 +31,10 @@ private:
     int movement_button;
     int linear_axis;
     int angular_axis;
+    
 public:
     joyNode(ros::NodeHandle& nh);
+    ros::Publisher twistPub;
     void joyCallback(const sensor_msgs::Joy& data);
 };
 

@@ -3,7 +3,7 @@
  * Date: 24/12/2021
 */
 
-#include "joy_twist.h"
+#include "../include/joy_twist.h"
 
 joyNode::joyNode(ros::NodeHandle& nh){
     joystickSub = nh.subscribe("/joy", 10, &joyNode::joyCallback, this);
@@ -14,9 +14,12 @@ joyNode::joyNode(ros::NodeHandle& nh){
     nh.param("/joy_twist/movement_button", movement_button, 4);
     nh.param("/joy_twist/linear_axis", linear_axis, 1);
     nh.param("/joy_twist/angular_axis", angular_axis, 0);
+
+    ros::spin();
 }
 
 void joyNode::joyCallback(const sensor_msgs::Joy& data){
+    ROS_INFO("sss");
     if(linear_axis != 1 && linear_axis != 3)
     {
         ROS_ERROR("Linear axis value should be 1 for left stick or 3 for right stick.");
@@ -42,17 +45,19 @@ void joyNode::joyCallback(const sensor_msgs::Joy& data){
         else if(data.buttons[movement_button] == 1){
             twist.linear.x = data.axes[linear_axis];
             twist.angular.z = data.axes[angular_axis];
-        } 
+        } else {
+            twist.linear.x = 0;
+            twist.angular.z = 0;
+        }
         twistPub.publish(twist);
-        twist.linear.x = 0;
-        twist.angular.z = 0;
     }
 }
+
 
 int main(int argc, char** argv){
     ros::init(argc, argv, "joystick_twist_node");
     ros::NodeHandle nh;
     joyNode joy(nh);
-    ros::spin();
+    
     return 0;
 }

@@ -2,6 +2,6 @@
 
 <launch>
     <rosparam command="load" file="$(find rover_21_control)/config/joy_twist.yaml"/>
-    <node pkg="rover_21_control" type="joy_twist" name="joy_twist"/>
+    <node pkg="rover_21_control" type="joy_twist" name="joy_twist" output="screen"/>
     <node pkg="joy" type="joy_node" name="joy"/>
 </launch>

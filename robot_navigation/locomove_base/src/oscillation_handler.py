@@ -58,21 +58,25 @@ class oscillation_handler:
 
                 direction = self.find_direction(self.yaw, self.goal_yaw)
                 if(direction == "right"):
-                    self.manipulator_twist.angular.z = -1.0
+                    self.manipulator_twist.angular.z = -0.6
                 else:
-                    self.manipulator_twist.angular.z = 1.0
+                    self.manipulator_twist.angular.z = 0.6
 
                 if self.pisagor(self.goal_y - self.y,self.goal_x - self.x) < self.XY_GOAL_TOLERANCE + 0.1: # If rover is in XY tolerance
                     while True:
                         if abs(self.yawMap(self.yaw ,self.goal_yaw)) < self.YAW_GOAL_TOLERANCE + 0.1: 
-                            print("ziro")
+                            print("hh")
+                            self.manipulator_twist.angular.z = 0
+                            self.cmd_pub.publish(self.manipulator_twist)
                             self.stop(1)
                             self.oscillation_flag = False
                             break
                         else:# If rover is not in the yaw tolerance, publish constant velocity to turn to the right direction. 
-                            self.cmd_pub.publish(self.manipulator_twist) 
+                            self.cmd_pub.publish(self.manipulator_twist)
+                            rospy.loginfo(rospy.Time.now().to_sec())
                         self.rate.sleep()
                 else:
+                    print("jjj")
                     while (abs(self.yawMap(self.yaw ,self.first_yaw)) > self.YAW_GOAL_TOLERANCE + 0.1):
                         self.cmd_pub.publish(self.manipulator_twist)
                     self.manipulator_twist.angular.z = 0
