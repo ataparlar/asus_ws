@@ -129,7 +129,7 @@ class hist_eq:
                 self.lower_limit_gain = True
                 self.gain = 5
         
-            subprocess.call(['sh', '/home/itu-rover-asus/21rover_ws/src/ar_tag_sim/script/cam.sh',str(self.exposure),str(self.gain)])
+            subprocess.call(['sh', '/home/itu-rover-asus/21rover_ws/src/detect_aruco/script/cam.sh',str(self.exposure),str(self.gain)])
 
 
         elif (self.flag_low_exposured) and (not ( self.upper_limit_exposure and self.upper_limit_gain)):
@@ -146,7 +146,7 @@ class hist_eq:
                 self.lower_limit_gain = False
             else : 
                 self.upper_limit_gain = True
-            subprocess.call(['sh', '/home/itu-rover-asus/21rover_ws/src/ar_tag_sim/script/cam.sh',str(self.exposure),str(self.gain)])
+            subprocess.call(['sh', '/home/itu-rover-asus/21rover_ws/src/detect_aruco/script/cam.sh',str(self.exposure),str(self.gain)])
             self.camera_mode = 0
 
 

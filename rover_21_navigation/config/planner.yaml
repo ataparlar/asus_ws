@@ -65,13 +65,13 @@ DWAPlannerROS:
 
   max_vel_trans: 0.8 #0.5
   min_vel_trans: 0.0
-  max_vel_theta: 1.57 #1.0 
-  min_vel_theta: -1.57
+  max_vel_theta: 0.8 #1.0 
+  min_vel_theta: -0.8
 
   prune_plan: false
   
   # Goal Tolerance Parameters
-  yaw_goal_tolerance: 3.14 #0.1
+  yaw_goal_tolerance: 0.3 #0.1
   xy_goal_tolerance: 0.3 #0.2
   latch_xy_goal_tolerance: false #false
 

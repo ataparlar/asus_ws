@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(ar_tag_sim)
+project(detect_aruco)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -8,19 +8,11 @@ project(ar_tag_sim)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  roscpp
   rospy
   std_msgs
-  roscpp
 )
 
-## Declare a catkin package
-catkin_package()
-
-## Build talker and listener
-include_directories(include ${catkin_INCLUDE_DIRS})
-
-add_executable(axis_corrector src/axis_corrector.cpp)
-target_link_libraries(axis_corrector ${catkin_LIBRARIES})
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -112,8 +104,8 @@ target_link_libraries(axis_corrector ${catkin_LIBRARIES})
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES ar_tag_demo
-#  CATKIN_DEPENDS rospy std_msgs
+#  LIBRARIES detect_aruco
+#  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
 
@@ -130,7 +122,7 @@ include_directories(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/ar_tag_demo.cpp
+#   src/${PROJECT_NAME}/detect_aruco.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -141,7 +133,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/ar_tag_demo_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/detect_aruco_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -205,7 +197,7 @@ include_directories(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_ar_tag_demo.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_detect_aruco.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

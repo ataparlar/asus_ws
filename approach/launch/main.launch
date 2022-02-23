@@ -1,4 +1,0 @@
-<launch>
-    <include file="$(find ar_tag_sim)/launch/track_sim.launch" />
-    <node pkg="approach" type="e_stop.py" name="e_stop_node" output="screen"/>
-</launch>

@@ -1,0 +1,4 @@
+<launch>
+ <include file="$(find detect_aruco)/launch/camera_outdoor.launch" />
+ <include file="$(find detect_aruco)/launch/aruco_detect.launch" />
+</launch>

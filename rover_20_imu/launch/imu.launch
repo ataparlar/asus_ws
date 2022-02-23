@@ -1,5 +1,4 @@
 <launch>
-
     <!-- Run Bosch BNO055 IMU -->
     <arg name="bosch_config_file" default="$(find bosch_imu_driver)/config/imu_bosch.yaml"/>
     <node pkg="bosch_imu_driver" type="bosch_imu_node.py" name="bosch_imu_node" output="screen">

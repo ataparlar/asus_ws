@@ -2,7 +2,6 @@
 #Author: Omer Bera Dinc
 
 import sys, os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'scripts'))
 import rospy
 import actionlib
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
@@ -51,7 +50,7 @@ class TurningAround:
             if i.fiducial_id not in self.count_marker.keys():
                 self.count_marker[i.fiducial_id] =0
                 #TODO: change send_goal, 0,0 location is start odometry of the move_base node
-                send_goal(self.position.x ,self.position.y ,m.atan2(self.correct_transform.translation.y,self.correct_transform.translation.x), "base_link")#"base_link" argument was here, number of arguments is too much when base_link is given.
+                #send_goal(self.position.x ,self.position.y ,m.atan2(self.correct_transform.translation.y,self.correct_transform.translation.x), "base_link")#"base_link" argument was here, number of arguments is too much when base_link is given.
                 print("I might see a tag just checking!")
                 rospy.sleep(4)
             for key,value in self.count_marker.items():

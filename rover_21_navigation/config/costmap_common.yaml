@@ -23,5 +23,5 @@ obstacles_laser:
     subscribe_to_updates: true
 
 inflation:
-    inflation_radius: 0.8 #1.0 #0.1
+    inflation_radius: 0.5 #1.0 #0.1
     # ınf radius * rabot_radius 

@@ -13,7 +13,7 @@ from std_msgs.msg import Bool
 
 class Gate:
     def __init__(self) :
-        rospy.init_node("gate")
+        rospy.init_node("Gate")
         self.x,self.y,self.z = None,None,None
         rospy.Subscriber("/odometry/filtered",Odometry,self.odom)
         rospy.Subscriber("/fiducial_transforms",FiducialTransformArray,self.marker)
@@ -35,7 +35,6 @@ class Gate:
         self.Rate = rospy.Rate(1)
         self.run()
 
-
     def odom(self,data):
         self.x = data.pose.pose.position.x
         self.y = data.pose.pose.position.y
@@ -50,6 +49,8 @@ class Gate:
         while not rospy.is_shutdown():
             if self.done == False:
                 if rospy.Time.now().to_sec() - self.starting_time >2 :
+                    #if (rospy.Time.now().to_sec() - self.starting_time > 20) and (len(self.markers) == 0 ):
+                        #return False 
                     if (self.initalized_look == False and len(self.markers) == 1):
                         print("saw only one tag")
                         self.marker_x,self.marker_y = list(self.markers.values())[0].translation.x,list(self.markers.values())[0].translation.y
@@ -68,6 +69,8 @@ class Gate:
                     if(self.initalized_finish and len(self.markers) == 2):
                         self.finish_job()
                     self.Rate.sleep()
+            else:
+                return True
 
 
     def gate_points(self,r):
@@ -75,28 +78,18 @@ class Gate:
         middle_y =  (list(self.markers.values())[0].translation.y + list(self.markers.values())[1].translation.y) / 2
         self.middle_p = (middle_x,middle_y)
         angle = m.atan2((list(self.markers.values())[0].translation.y - list(self.markers.values())[1].translation.y),(list(self.markers.values())[0].translation.x - list(self.markers.values())[1].translation.x))
-        self.edge_pts = ((m.cos(angle) * (r+1)  + middle_x ,m.sin(angle) * (r+1) + middle_y))
         angle += m.pi/2
         self.main_pts.append((m.cos(angle) * r + middle_x ,m.sin(angle) * r + middle_y))
         self.main_pts.append((-m.cos(angle) * r + middle_x ,-m.sin(angle) * r + middle_y))
         dist1 = self.find_distance((self.x,self.y),self.main_pts[0])
         dist2 = self.find_distance((self.x,self.y),self.main_pts[1])
-        print(self.edge_pts)
         if(dist1 < dist2):
             self.first_x,self.first_y = self.main_pts[0][0],self.main_pts[0][1]
             self.next_x,self.next_y = self.main_pts[1][0],self.main_pts[1][1]
         else:
             self.first_x,self.first_y = self.main_pts[1][0],self.main_pts[1][1]
             self.next_x,self.next_y = self.main_pts[0][0],self.main_pts[0][1]
-
-        print((list(self.markers.values())[0].translation.x) , (list(self.markers.values())[0].translation.y))
-        print((list(self.markers.values())[1].translation.x) , (list(self.markers.values())[1].translation.y))
-        print(middle_x,middle_y)
        
-        if self.find_distance((self.x,self.y),(self.first_x,self.first_y)) > 1:
-            send_goal(self.first_x,self.first_y,m.atan2(middle_y-self.first_y,middle_x-self.first_x))
-        else:
-            send_goal(self.x,self.y,m.atan2(middle_y-self.y,middle_x-self.x))
             
 
 
@@ -104,49 +97,16 @@ class Gate:
         return np.sqrt((pt1[0]-pt2[0])**2 + (pt1[1]-pt2[1])**2)
 
     def finish_job(self):
-        if self.status == 3 and self.trial == 0:
-            rospy.sleep(3)
-            print(self.is_it_right_side(0.5))
-            if self.is_it_right_side(0.5):
-                print("found right side passing the gate!")
-                send_goal(self.middle_p[0],self.middle_p[1],self.yaw)
-                send_goal(self.next_x,self.next_y,self.yaw)
-                self.done = True
-            else:
-                print("Wrong side !")
-                send_goal(self.edge_pts[0],self.edge_pts[1],m.atan2(self.next_y-self.edge_pts[1],self.next_x-self.edge_pts[0]))
-            self.trial+=1
-        if self.status == 3 and self.trial == 1:
-            print("Go check other side !")
-            send_goal(self.next_x,self.next_y,m.atan2(self.middle_p[1]-self.next_y,self.middle_p[0]-self.next_x))
-            self.trial+=1
-        if self.status == 3 and self.trial ==2:
-            rospy.sleep(3)
-            if self.is_it_right_side(0.5):
-                print("found right side passing the gate!")
-                send_goal(self.middle_p[0],self.middle_p[1],self.yaw)
-                send_goal(self.first_x,self.first_y,self.yaw)
-                self.trial+=1
-            else:
-                self.markers = {}
-                self.trial = 0
-                self.initalized_finish = False
-        if(self.status == 3) and (self.trial== 3):
-            send_goal(self.first_x,self.first_y,self.yaw)
-
-    
-    def is_it_right_side(self,threshold):
-        marker1_ori = list(self.markers.values())[0].rotation
-        marker2_ori = list(self.markers.values())[1].rotation
-        marker1_yaw = euler_from_quaternion((marker1_ori.x,marker1_ori.y,marker1_ori.z,marker1_ori.w))[1]
-        marker2_yaw = euler_from_quaternion((marker2_ori.x,marker2_ori.y,marker2_ori.z,marker2_ori.w))[1]
-        print(marker1_yaw,marker2_yaw)
-        print((m.pi - (marker1_yaw % m.pi)))
-        #if abs(marker1_yaw - marker2_yaw) < threshold :
-        if (marker1_yaw % m.pi < threshold) or ((m.pi - (marker1_yaw % m.pi)) < threshold):
-            if (marker2_yaw % m.pi < threshold) or ((m.pi - (marker2_yaw % m.pi)) < threshold):
-                return True  
-        return False
+        if self.find_distance((self.x,self.y),(self.first_x,self.first_y)) > 2:
+            send_goal(self.first_x,self.first_y,m.atan2(self.middle_p[1]-self.first_y,self.middle_p[0]-self.first_x))
+        else:
+            send_goal(self.x,self.y,m.atan2(self.middle_p[1]-self.y,self.middle_p[0]-self.x))
+        
+        self.gate_points(4)
+        send_goal((self.middle_p[0]+self.x) / 2 , (self.middle_p[1]+self.y) / 2 ,self.yaw )
+        send_goal(self.middle_p[0],self.middle_p[1],self.yaw)
+        send_goal(self.next_x,self.next_y,self.yaw)
+        self.done = True
 
 
     def stop(self):
@@ -181,16 +141,15 @@ class Gate:
             self.correct_transform.rotation = transform.rotation
             if i.fiducial_id not in self.count_marker.keys():
                 self.count_marker[i.fiducial_id] =0
-                send_goal(0,0,m.atan2(self.correct_transform.translation.y,self.correct_transform.translation.x),"base_link")
                 self.stop()
                 print("I might see a tag just checking!")
-                rospy.sleep(4)
+                rospy.sleep(5)
                 self.go_on()
             for key,value in self.count_marker.items():
                 if key == i.fiducial_id:
                     self.count_marker[i.fiducial_id] +=1
-                if value > 15:
-                    self.correct_transform.translation.x += 0.5 # since camera is 50 cm in front of base link
+                if value > 5:
+                    self.correct_transform.translation.x += 0.3 # since camera is 50 cm in front of base link
                     #print("marker : " + str(pose.translation.x)  + "  " + str(pose.translation.y))    
                     dist_from_vehicle = self.find_distance((0,0),(self.correct_transform.translation.x,self.correct_transform.translation.y))  
                     #print(dist_from_vehicle)
